@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { ApiAlert } from "@/components/ui/api-alert";
 
 
 interface SettingsFormProps {
@@ -51,11 +52,26 @@ export const SettingsForm : React.FC<SettingsFormProps> = ({initialData}) => {
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    const onDelete = async () => {
+        try {
+            setLoading(true);
+            await axios.delete(`/api/stores/${params.storeId}`);
+            router.refresh();
+            router.push('/');
+            toast.success("Store deleted");
+        } catch (error) {
+            toast.error("Make sure you removed all products and categories first.");
+        } finally {
+            setLoading(false);
+            setOpen(false);
+        }
+    };
 
     return (
         <>
-        <AlertModal isOpen={open} onClose={() => setOpen(false)} onConfirm={() => {}} loading={loading} />
+        <AlertModal isOpen={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
         <div className="flex items-center justify-between">
             <Heading title = "Settings" description="Manage store preferences" />
             <Button disabled={loading} variant="destructive" size="sm" onClick={() => setOpen(true)}>
@@ -80,6 +96,8 @@ export const SettingsForm : React.FC<SettingsFormProps> = ({initialData}) => {
                 <Button disabled={loading} className="ml-auto" type="submit">Save Changes</Button>
             </form>
         </Form>
+        <Separator />
+        <ApiAlert title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${params.storeId}`} variant="public"/>
         </>
     );
 };

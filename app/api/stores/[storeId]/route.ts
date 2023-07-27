@@ -28,7 +28,7 @@ export async function PATCH (
                 userId
             }, data : {name}
         });
-
+        return NextResponse.json(store);
     } catch (error) {
         console.log('[STORES_PATCH]', error);
         return new NextResponse("Internal error", {status : 500});
@@ -57,7 +57,7 @@ export async function DELETE (
                 userId
             }
         });
-
+        return NextResponse.json(store);
     } catch (error) {
         console.log('[STORES_DELETE]', error);
         return new NextResponse("Internal error", {status : 500});
