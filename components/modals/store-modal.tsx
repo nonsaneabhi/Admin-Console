@@ -10,9 +10,10 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import * as z from "zod";
 import axios from 'axios';
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
-  name : z.string().trim().min(3),
+  name : z.string().trim().min(1),
 });
 
 export const StoreModal = () => {
@@ -31,9 +32,10 @@ export const StoreModal = () => {
     try {
       setLoading(true);
       const response = await axios.post('/api/stores', values);
-      console.log(response);
+      toast.success("Store created");
+      window.location.assign(`/${response.data.id}`);
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
