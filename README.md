@@ -1,2 +1,2 @@
-# Admin-Console
-Illustrative web application for handling ecommerce warehousing
+# Ecommerce Dashboard
+Illustrative web application for handling e-commerce warehousing
